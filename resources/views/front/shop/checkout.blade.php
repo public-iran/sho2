@@ -13,7 +13,7 @@
 @endphp
 @extends('front.layout.master')
 @section('style_link')
-
+    <link rel="stylesheet" type="text/css" href="{{asset('front/css/responsive-rtl.css')}}" />
 @endsection
 @section('style')
     <style>
@@ -45,6 +45,104 @@
         }
         .invalid-feedback{
             color: red;
+        }
+        .panel-default>.panel-heading {
+            color: #333;
+            background-color: #f5f5f5;
+            border-color: #ddd;
+            padding: 10px 15px;
+            border-bottom: 1px solid
+        }
+        .panel-title {
+            margin-top: 0;
+            margin-bottom: 0;
+            font-size: 16px;
+            color: inherit;
+        }
+        .panel {
+            margin-bottom: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+            box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+        }
+        .panel-body {
+            padding: 15px;
+        }
+        label {
+            display: inline-block;
+            max-width: 100%;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-weight: normal;
+            font-size: 15px;
+        }
+        div.required .control-label:before {
+            content: '* ';
+            color: #F00;
+            font-weight: bold;
+        }
+        .form-control {
+            display: block;
+            width: 100%;
+            height: 34px;
+            padding: 6px 12px;
+            font-size: 14px;
+            line-height: 1.42857143;
+            color: #555;
+            background-color: #fff;
+            background-image: none;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+            -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+            -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+        }
+        input[type="radio"], input[type="checkbox"] {
+            margin: 4px 0 0;
+            margin-top: 1px \9;
+            line-height: normal;
+        }
+        input[type="radio"], input[type="checkbox"] {
+            margin: 4px 0 0;
+            margin-top: 1px \9;
+            line-height: normal;
+            height: 15px;
+        }
+        .radio, .checkbox {
+            position: relative;
+            display: block;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        .radio label, .checkbox label {
+            padding-right: 20px;
+            padding-left: initial;
+        }
+        .radio input[type="radio"], .radio-inline input[type="radio"], .checkbox input[type="checkbox"], .checkbox-inline input[type="checkbox"] {
+            position: absolute;
+            margin-left: -20px;
+            margin-top: 4px \9;
+            right: -163px;
+        }
+        .radio label, .checkbox label {
+            min-height: 20px;
+            padding-left: 20px;
+            margin-bottom: 0;
+            font-weight: normal;
+            cursor: pointer;
+        }
+        textarea.form-control {
+            height: auto;
+        }
+        .buttons {
+            border-top: 1px solid #EEEEEE;
+            overflow: auto;
+            padding: 15px 6px 0px 6px;
+            margin-bottom: 20px;
         }
     </style>
 @endsection
@@ -341,7 +439,7 @@
                                                       name="description"></textarea>
                                             <br>
                                             <label class="control-label" for="confirm_agree">
-                                                <input type="checkbox" checked="checked" value="1" required=""
+                                                <input style="width: 35px;" type="checkbox" checked="checked" value="1" required=""
                                                        class="validate required" id="confirm_agree"
                                                        name="confirm agree">
                                                 <span><a class="agree" href="#"><b>شرایط و قوانین</b></a> را خوانده ام و با آنها موافق هستم.</span>

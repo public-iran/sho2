@@ -38,6 +38,7 @@ class FrontController extends Controller
         $spacial_product = Product::where(['special' => 'YES', 'status' => 'PUBLISHED'])->orderby('id', 'desc')->take(8)->get();
         $categories_image = Category::where('showindex', 'YES')->get();
         $categories = Category::where('parent', '0')->get();
+
         $posts = Post::where('status', 'PUBLISHED')->orderby('id', 'desc')->take(3)->get();
         $sliders = Slider::where('status', 'Show')->get();
         $banners = Banner::where('status', 'Show')->get();
@@ -79,7 +80,9 @@ class FrontController extends Controller
         $categories = Postcategory::all();
 
         $post = Post::where(['status' => 'PUBLISHED', 'slug' => $slug])->with('postcategories')->first();
+
         $comments=Post_comments::where(['post_id'=>$post->id,'status'=>'SEEN','parent'=>'0'])->get();
+
         $last_posts = Post::where('status', 'PUBLISHED')->with('postcategories')->orderByRaw('id','desc')->take(4)->get();
         $posts_view = Post::where('status', 'PUBLISHED')->with('postcategories')->orderByRaw('view','desc')->take(4)->get();
         return view('front.blog.show', compact('post', 'categories', 'posts_rand','last_posts', 'posts_view','comments'));
@@ -134,7 +137,7 @@ class FrontController extends Controller
         $spacial_product = Product::where(['special' => 'YES', 'status' => 'PUBLISHED'])->orderby('id', 'desc')->take(6)->get();
 
         $sales=Product::where('status','PUBLISHED')->orderby('sale','desc')->take(6)->get();
-        $categories = Category::all();
+        $categories = Category::where('parent','0')->get();
         $products_new = Product::where('status', 'PUBLISHED')->orderby('id', 'desc')->take(11)->get();
         $products_discount = Product::where('status', 'PUBLISHED')->where('discount', '!=', '0')->take(11)->get();
         $attributes = Attribute::with('attribute_values')->where('inshop', 'YES')->get();
@@ -147,7 +150,7 @@ class FrontController extends Controller
         $product = Product::where(['slug' => $slug])->first();
         $images = Gallery::where(['product_id' => $product->id, 'type' => 'product'])->get();
         $featurs = Feature::where('product_id', $product->id)->get();
-        $comments=Comment::where(['product_id'=>$product->id,'status'=>'SEEN'])->get();
+        $comments=Comment::where(['product_id'=>$product->id,'status'=>'SEEN','parent'=>'0'])->get();
         $sales=Product::where('status','PUBLISHED')->orderby('sale','desc')->take(7)->get();
         $like_products = collect([]);
         foreach ($product->categories as $val) {
@@ -277,6 +280,7 @@ class FrontController extends Controller
 
         if ($request->dataval) {
             foreach ($products as $productKey => $product) {
+
                 foreach ($request->dataval as $key => $arrayValId) {
 
                     $attr = explode('-', $arrayValId['name']);
@@ -287,6 +291,7 @@ class FrontController extends Controller
                     @$productVal = $productAttrVal[$product->id][$attrId];*/
 
                     @$productVal = $productAttrVal[$product->id][$attrId[0]];
+
                     if (isset($productVal)) {
                         if (!in_array($productVal, $arrayValId)) {
                             unset($products[$productKey]);
@@ -295,68 +300,73 @@ class FrontController extends Controller
                 }
             }
         }
+
         /* return response([
              'msg'=>$products
          ]);*/
         if (count($products)){
             foreach ($products as $item) {
-
                 ?>
-                <div class="product product--list product--list-small">
-
-                    <div class="product__thumbnail">
-                        <img class="img-fluid" style="max-height: 210px" src="<?= asset($item->image) ?>" alt="<?=$item->title ?>" title="<?= $item->title ?>">
-                        <div class="prod_btn">
-                            <a href="/product/<?= $item->slug ?>" class="transparent btn--sm btn--round">اطلاعات بیشتر </a>
-                            <a href="/product/<?= $item->slug ?>" class="transparent btn--sm btn--round">مشاهده</a>
-                        </div>
-                        <!-- end /.prod_btn -->
-                    </div>
-                    <!-- end /.product__thumbnail -->
-
-                    <div class="product__details">
-                        <div class="product-desc">
-                            <a href="#" class="product_title">
-                                <h4><?= str_limit($item->title,40) ?></h4>
+                <div class="col-lg-4 col-md-4 col-sm-6 mt-40">
+                    <!-- single-product-wrap start -->
+                    <div class="single-product-wrap">
+                        <div class="product-image" style="text-align: center">
+                            <a href="/product/<?= $item->slug ?>">
+                                <img style="width: 70%" src="<?= asset($item->image) ?>" alt="<?=$item->title?>">
                             </a>
-                            <?= str_limit($item->excerpt,60) ?>
-                            <ul class="titlebtm">
-                                <li class="product_cat">
-                                    <?php foreach ($item->categories as $category): ?>
-
-                                    <a href="#">
-                                        <span style="font-size: 12px"><?= $category->title ?></span>
-                                    </a>
-                                   <?php endforeach; ?>
-                                </li>
-                            </ul>
-                            <!-- end /.titlebtm -->
+                <?php if($item->discount>0){?>
+                            <span class="sticker"><?=$item->discount?>%</span>
+                <?php } ?>
                         </div>
-                        <!-- end /.product-desc -->
-
-
-                        <div class="product-purchase">
-                            <div class="price_love">
-                                <?php if($item->discount>0): ?>
-                                <span> <span class="price-new"><?= number_format($item->price*(100-$item->discount)/100) ?> تومان</span> <span class="price-old" style="text-decoration: line-through"><?= number_format($item->price) ?> تومان</span> <span class="saving"> تخفیف : <?= $item->discount ?>%</span> </span>
-                                <?php else: ?>
-                                <span> <?= number_format($item->price) ?> تومان </span>
-                                <?php endif; ?>
+                        <div class="product_desc">
+                            <div class="product_desc_info">
+                                <div class="product-review">
+                                    <!--<h5 class="manufacturer">
+                                        <a href="/product/{{$item->slug}}">{{$item->title}}</a>
+                                    </h5>
+                                    <div class="rating-box">
+                                        <ul class="rating">
+                                            <li><i class="fa fa-star-o"></i></li>
+                                            <li><i class="fa fa-star-o"></i></li>
+                                            <li><i class="fa fa-star-o"></i></li>
+                                            <li class="no-star"><i class="fa fa-star-o"></i></li>
+                                            <li class="no-star"><i class="fa fa-star-o"></i></li>
+                                        </ul>
+                                    </div>-->
+                                </div>
+                                <h4><a class="product_name" href="/product/<?=$item->slug?>"><?=str_limit($item->title,50)?></a></h4>
+                                <div class="price-box">
+                                    <?php if($item->discount>0){?>
+                                    <span class="old-price"><?=number_format($item->price)?> تومان</span>
+                                    <span class="new-price"><?=number_format($item->price*(100-$item->discount)/100)?> تومان</span>
+                                    <?php }else{?>
+                                    <span class="new-price"><?=number_format($item->price)?> تومان</span>
+                                    <?php } ?>
+                                </div>
                             </div>
-                            <div class="love-comments d-flex justify-content-around">
-                                <p>
-                                    <span class="lnr lnr-heart" style="font-family: 'Linearicons-Free' !important;"></span> 90
-                                </p>
-                                <p>
-                                    <span class="lnr lnr-cart" style="font-family: 'Linearicons-Free' !important;"></span>
-                                    <span>16</span>
-                                </p>
-                            </div>
+                            <div class="add-actions">
+                                <ul class="add-actions-link">
+                <?php if($item->depot>0){?>
+                                    <li class="add-cart active" onclick="addcart(this,'<?=$item->id?>')"><a>افزودن به سبد خرید</a></li>
+                <?php }else{?>
+                    <li class="add-cart active" style="background: #ccc"><a>ناموجود</a></li>
+                <?php } ?>
+                                    <?php
+                                    $favorite=Favorite::where(['user_id'=>Auth::id(),'product_id'=>$item->id])->first();
 
+                                    if(empty($favorite)){?>
+                                    <li><a class="links-details" onclick="favorite(this,<?=$item->id?>)" title="افزودن به علاقه مندی"><i class="fa fa-heart-o"></i></a></li>
+                                    <?php }else{?>
+                                    <li><a class="links-details" onclick="favorite(this,<?=$item->id?>)" title="افزودن به علاقه مندی"><i style="color: red" class="fa fa-heart-o"></i></a></li>
+                                    <?php } ?>
+                                    <li><a href="/product/<?=$item->slug?>" title="مشاهده " class="quick-view-btn"><i class="fa fa-eye"></i></a></li>
+                                </ul>
+                            </div>
                         </div>
-                        <!-- end /.product-purchase -->
                     </div>
+                    <!-- single-product-wrap end -->
                 </div>
+
                 <?php
             }
         }else{?>

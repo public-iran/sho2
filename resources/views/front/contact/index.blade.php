@@ -1,199 +1,101 @@
 @extends('front.layout.master')
 @section('style')
-    <style>
-        .invalid-feedback{
-            display: block;
-        }
-    </style>
+
 @endsection
 @section('content')
-    <!--================================
-    START BREADCRUMB AREA
-=================================-->
-    <section class="breadcrumb-area breadcrumb--center breadcrumb--smsbtl dir-rtl">
+    <!-- Begin Li's Breadcrumb Area -->
+    <div class="breadcrumb-area">
+        <div class="container">
+            <div class="breadcrumb-content">
+                <ul>
+                    <li><a href="index.html">خانه</a></li>
+                    <li class="active">تماس</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Li's Breadcrumb Area End Here -->
+    <!-- Begin Contact Main Page Area -->
+    <div class="contact-main-page mt-60 mb-40 mb-md-40 mb-sm-40 mb-xs-40">
+       {{-- <div class="container mb-60">
+            <div id="google-map"></div>
+        </div>--}}
         <div class="container">
             <div class="row">
-                <div class="col-md-12">
-                    <div class="page_title">
-                        <h3>ارتباط با ما</h3>
-                        <p class="subtitle">جای درستی آمدی</p>
-                    </div>
-                    <div class="breadcrumb">
-                        <ul>
-                            <li>
-                                <a href="/">خانه</a>
-                            </li>
-                            <li class="active">
-                                <a href="/contact">ارتباط با ما</a>
-                            </li>
-                        </ul>
+                <div class="col-lg-5 offset-lg-1 col-md-12 order-1 order-lg-2">
+                    <div class="contact-page-side-content">
+                        <h3 class="contact-page-title">تماس با ما</h3>
+                        <p class="contact-page-message mb-25">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف.</p>
+                        <div class="single-contact-block">
+                            <h4><i class="fa fa-fax"></i> آدرس</h4>
+                            <p>{{$setting['address']}}</p>
+                        </div>
+                        <div class="single-contact-block">
+                            <h4><i class="fa fa-phone"></i> تلفن</h4>
+                            <p>موبایل: {{$setting['mobile']}} </p>
+                            <p>خط تلفن: {{$setting['tell']}} </p>
+                        </div>
+                        <div class="single-contact-block last-child">
+                            <h4><i class="fa fa-envelope-o"></i> ایمیل</h4>
+                            <p>{{$setting['email']}}</p>
+                        </div>
                     </div>
                 </div>
-                <!-- end /.col-md-12 -->
-            </div>
-            <!-- end /.row -->
-        </div>
-        <!-- end /.container -->
-    </section>
-    <!--================================
-        END BREADCRUMB AREA
-    =================================-->
-
-    <!--================================
-        START AFFILIATE AREA
-    =================================-->
-    <section class="contact-area section--padding dir-rtl">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="row">
-                        <!-- start col-md-12 -->
-                        <div class="col-md-12">
-                            <div class="section-title">
-                                <h1>چطور میتوانیم
-                                    <span class="highlighted">کمک</span> کنیم؟
-                                </h1>
-                                {{--
-                                                                <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است.</p>
-                                --}}
-                            </div>
-                        </div>
-                        <!-- end /.col-md-12 -->
-                    </div>
-                    <!-- end /.row -->
-
-                    <div class="row">
-                        <div class="col-lg-4 col-md-6">
-                            <div class="contact_tile">
-                                <i class="tiles__icon lnr lnr-map-marker"></i>
-                                <h4 class="tiles__title">آدرس دفتر</h4>
-                                <div class="tiles__content">
-                                    <p>{{$setting['address']}} </p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end /.col-lg-4 col-md-6 -->
-
-                        <div class="col-lg-4 col-md-6">
-                            <div class="contact_tile">
-                                <i class="tiles__icon lnr lnr-phone"></i>
-                                <h4 class="tiles__title">تلفن </h4>
-                                <div class="tiles__content">
-                                    <p>{{$setting['tell']}} </p>
-                                    <p>{{$setting['mobile']}}</p>
-                                </div>
-                            </div>
-                            <!-- end /.contact_tile -->
-                        </div>
-                        <!-- end /.col-lg-4 col-md-6 -->
-
-                        <div class="col-lg-4 col-md-6">
-                            <div class="contact_tile">
-                                <i class="tiles__icon lnr lnr-inbox"></i>
-                                <h4 class="tiles__title">ایمیل</h4>
-                                <div class="tiles__content">
-                                    <p>{{$setting['email']}}</p>
-
-                                </div>
-                            </div>
-                            <!-- end /.contact_tile -->
-                        </div>
-                        <!-- end /.col-lg-4 col-md-6 -->
-
-                        <div class="col-md-12">
-                            <div class="contact_form cardify">
-                                <div class="contact_form__title" id="send-message">
-                                    <h3>پیغام خود را بنویسید </h3>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-8 offset-md-2">
-                                        <div class="contact_form--wrapper">
-                                            <form action="{{route('contact_store')}}" method="post">
-                                                @csrf
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <input id="fname" name="name" type="text" class="{{ $errors->has('name') ? ' is-invalid' : '' }}"
-                                                                   placeholder="نام ">
-                                                            @if ($errors->has('name'))
-                                                                <span class="invalid-feedback" role="alert">
+                <div class="col-lg-6 col-md-12 order-2 order-lg-1">
+                    <div class="contact-form-content pt-sm-55 pt-xs-55">
+                        <h3 class="contact-page-title">پیام خود را به ما بگویید</h3>
+                        <div class="contact-form">
+                            <form id="contact-form" action="{{route('contact_store')}}" method="post">
+                                @csrf
+                                <div class="form-group">
+                                    <label>نام شما <span class="required">*</span></label>
+                                    <input type="text" name="name" id="customername" placeholder="نام " required>
+                                    @if ($errors->has('name'))
+                                        <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('name') }}</strong>
                                     </span>
-                                                            @endif
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <input id="lname" name="family" type="text"
-                                                                   placeholder="نام خانوادگی">
-                                                            @if ($errors->has('family'))
-                                                                <span class="invalid-feedback" role="alert">
+                                    @endif
+                                </div>
+                                <div class="form-group">
+                                    <label>نام خانوادگی شما <span class="required">*</span></label>
+                                    <input type="text" name="family" id="customername" placeholder="نام خانوادگی " required>
+                                    @if ($errors->has('family'))
+                                        <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('family') }}</strong>
                                     </span>
-                                                            @endif
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <input type="email" name="email" placeholder="ایمیل">
-                                                            @if ($errors->has('email'))
-                                                                <span class="invalid-feedback" role="alert">
+                                    @endif
+                                </div>
+                                <div class="form-group">
+                                    <label>ایمیل شما <span class="required">*</span></label>
+                                    <input type="email" name="email" id="customerEmail" placeholder="ایمیل" required>
+                                    @if ($errors->has('email'))
+                                        <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('email') }}</strong>
                                     </span>
-                                                            @endif
-                                                        </div>
-                                                    </div>
+                                    @endif
+                                </div>
 
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <input type="text" name="mobile" placeholder="تلفن ">
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <textarea cols="30" rows="10" name="message"
-                                                          placeholder="متن خود را بنویسید "></textarea>
-                                                @if ($errors->has('message'))
-                                                    <span class="invalid-feedback" role="alert">
+                                <div class="form-group mb-30">
+                                    <label>پیام شما</label>
+                                    <textarea name="message" id="contactMessage" placeholder="متن خود را بنویسید "></textarea>
+                                    @if ($errors->has('message'))
+                                        <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('message') }}</strong>
                                     </span>
-                                                @endif
-
-                                                <div class="sub_btn">
-                                                    <button type="submit" class="btn btn--round btn--default">ارسال
-                                                    </button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <!-- end /.col-md-8 -->
+                                    @endif
                                 </div>
-                                <!-- end /.row -->
-                            </div>
-                            <!-- end /.contact_form -->
+                                <div class="form-group">
+                                    <button type="submit" class="li-btn-3">ارسال</button>
+                                </div>
+                            </form>
                         </div>
-                        <!-- end /.col-md-12 -->
+
                     </div>
-                    <!-- end /.row -->
                 </div>
-                <!-- end /.col-md-12 -->
             </div>
-            <!-- end /.row -->
         </div>
-        <!-- end /.container -->
-    </section>
-    <!--================================
-        END BREADCRUMB AREA
-    =================================-->
-
-
-
+    </div>
+    <!-- Contact Main Page Area End Here -->
 @endsection
 @section('script')
     @if(session('save_comment'))
@@ -206,5 +108,3 @@
 @php
     Session::forget('save_comment');
 @endphp
-
-

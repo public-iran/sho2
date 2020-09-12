@@ -29,101 +29,82 @@
     </style>
 @endsection
 @section('content')
-    <div id="container">
-        <div class="container">
-            <!-- Breadcrumb Start-->
 
-            <!-- Breadcrumb End-->
+    <!-- Begin Li's Breadcrumb Area -->
+    <div class="breadcrumb-area">
+        <div class="container">
+            <div class="breadcrumb-content">
+                <ul>
+                    <li><a href="/">خانه</a></li>
+                    <li class="active"> ثبت نام</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Li's Breadcrumb Area End Here -->
+    <!-- Begin Login Content Area -->
+    <div class="page-section">
+        <div class="container">
             <div class="row">
-                <!--Middle Part Start-->
-                <div class="col-sm-9" id="content">
-                    <h1 class="title">ثبت نام حساب کاربری</h1>
-                    <p>اگر قبلا حساب کاربریتان را ایجاد کرد اید جهت ورود به <a href="/login">صفحه لاگین</a> مراجعه کنید.</p>
-                        <form class="form-horizontal row login_form" action="{{ route('register') }}" method="POST" id="register_form" >
-                            @csrf
-                        <fieldset id="account">
-                            <legend>اطلاعات شخصی شما</legend>
-                            <div style="display: none;" class="form-group required">
-                                <label class="col-sm-2 control-label">گروه مشتری</label>
-                                <div class="col-sm-10">
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" checked="checked" value="1" name="customer_group_id">
-                                            پیشفرض</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group required">
-                                <label for="input-firstname" class="col-sm-2 control-label">نام</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" id="input-firstname" placeholder="نام" value="{{ old('name') }}" name="name">
+                <div style="margin: 0 auto" class="col-sm-12 col-md-6 col-lg-6 col-xs-12">
+                    <form class="form-horizontal row login_form" action="{{ route('register') }}" method="POST" id="register_form" >
+                        @csrf
+                        <div class="login-form">
+                            <h4 class="login-title">ثبت نام</h4>
+                            <div class="row">
+                                <div class="col-md-6 col-12 mb-20">
+                                    <label>نام اصلی</label>
+                                    <input name="name" class="mb-0" type="text" placeholder="نام اصلی">
                                     @if ($errors->has('name'))
                                         <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('name') }}</strong>
                                     </span>
                                     @endif
                                 </div>
-                            </div>
-                            <div class="form-group required">
-                                <label for="input-lastname" class="col-sm-2 control-label">نام خانوادگی</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control{{ $errors->has('family') ? ' is-invalid' : '' }}" id="input-lastname" placeholder="نام خانوادگی" value="{{ old('family') }}" name="family">
+                                <div class="col-md-6 col-12 mb-20">
+                                    <label>نام خانوادگی</label>
+                                    <input class="mb-0" name="family" type="text" placeholder="نام خانوادگی">
                                     @if ($errors->has('family'))
                                         <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('family') }}</strong>
                                     </span>
                                     @endif
                                 </div>
-                            </div>
-                            <div class="form-group required">
-                                <label for="input-email" class="col-sm-2 control-label">آدرس ایمیل</label>
-                                <div class="col-sm-10">
-                                    <input type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" id="input-email" placeholder="آدرس ایمیل" value="{{ old('email') }}" name="email">
+                                <div class="col-md-12 mb-20">
+                                    <label>آدرس ایمیل*</label>
+                                    <input class="mb-0" name="email" type="email" placeholder="آدرس ایمیل">
                                     @if ($errors->has('email'))
                                         <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('email') }}</strong>
                                     </span>
                                     @endif
                                 </div>
-                            </div>
-
-                        </fieldset>
-
-                        <fieldset>
-                            <legend>رمز عبور شما</legend>
-                            <div class="form-group required">
-                                <label for="input-password" class="col-sm-2 control-label">رمز عبور</label>
-                                <div class="col-sm-10">
-                                    <input type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" id="input-password" placeholder="رمز عبور" value="" name="password">
+                                <div class="col-md-6 mb-20">
+                                    <label>رمزعبور</label>
+                                    <input class="mb-0" name="password" type="password" placeholder="رمزعبور">
                                     @if ($errors->has('password'))
                                         <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('password') }}</strong>
                                     </span>
                                     @endif
                                 </div>
-                            </div>
-                            <div class="form-group required">
-                                <label for="input-confirm" class="col-sm-2 control-label">تکرار رمز عبور</label>
-                                <div class="col-sm-10">
-                                    <input type="password" class="form-control" id="input-confirm" placeholder="تکرار رمز عبور" value="" name="password_confirmation">
+                                <div class="col-md-6 mb-20">
+                                    <label>تایید رمز عبور</label>
+                                    <input class="mb-0" name="password_confirmation" type="password" placeholder="تایید رمز عبور">
+
 
                                 </div>
-                            </div>
-                        </fieldset>
-
-                        <div class="buttons">
-                            <div class="pull-right">
-                                <input type="checkbox" value="1" name="agree">
-                                &nbsp;من <a class="agree" href=""><b>سیاست حریم خصوصی</b> را خوانده ام و با آن موافق هستم</a> &nbsp;
-                                <input type="submit" class="btn btn-primary" value="ادامه">
+                                <div class="col-12">
+                                    <button type="submit" class="register-button mt-0">ثبت نام</button>
+                                </div>
                             </div>
                         </div>
                     </form>
                 </div>
-                <!--Middle Part End -->
-
             </div>
         </div>
     </div>
+    <!-- Login Content Area End Here -->
+
 
 @endsection

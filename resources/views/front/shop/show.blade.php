@@ -1,704 +1,408 @@
 @extends('front.layout.master')
 
+@section('style')
+    <style>
+        .product-details-view-content .product-info h1 {
+            font-size: 18px;
+            letter-spacing: -.025em;
+            line-height: 24px;
+            color: #0363cd;
+            text-transform: capitalize;
+            font-weight: 500;
+            margin: 0 0 15px 0;
+        }
+        .wishlist-btn{
+            cursor: pointer;
+        }
+        .product-description div,.product-description span,.product-description p,.product-description h3,.product-description h1,.product-description h4,.product-description h5,.product-description h6,.product-description h2{
+            font-family: 'IRANSansDN','aviny', 'Rubik', sans-serif !important;
+        }
+    </style>
+@endsection
 @section('content')
-    <!--================================
-        START BREADCRUMB AREA
-    =================================-->
-    <section class="breadcrumb-area dir-rtl">
+    <!-- Begin Li's Breadcrumb Area -->
+    <div class="breadcrumb-area">
+        <div class="container">
+            <div class="breadcrumb-content">
+                <ul>
+                    <li><a href="/">خانه</a></li>
+                    <li><a href="/shop">محصولات</a></li>
+                    <li class="active">{{$product->title}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Li's Breadcrumb Area End Here -->
+    <!-- content-wraper start -->
+    <div class="content-wraper">
+        <div class="container">
+            <div class="row single-product-area">
+                <div class="col-lg-5 col-md-6">
+                    <!-- Product Details Left -->
+                    <div class="product-details-left">
+                        <div class="product-details-images slider-navigation-1">
+                            @foreach($images as $image)
+                            <div class="lg-image">
+                                <a class="popup-img venobox vbox-item" href="{{asset($image->path)}}" data-gall="myGallery">
+                                    <img src="{{asset($image->path)}}" alt="product image">
+                                </a>
+                            </div>
+                            @endforeach
+                        </div>
+                        <div class="product-details-thumbs slider-thumbs-1">
+                            @foreach($images as $image)
+                            <div class="sm-image"><img src="{{asset($image->path)}}" alt="{{asset($image->path)}}"></div>
+                            @endforeach                        </div>
+                    </div>
+                    <!--// Product Details Left -->
+                </div>
+
+                <div class="col-lg-7 col-md-6">
+                    <div class="product-details-view-content pt-60">
+                        <div class="product-info">
+                            <h1>{{$product->title}}</h1>
+                            <span class="product-details-ref">منبع: demo_15</span>
+                            <div class="rating-box pt-20">
+                                <ul class="rating rating-with-review-item">
+                                    <li><i class="fa fa-star-o"></i></li>
+                                    <li><i class="fa fa-star-o"></i></li>
+                                    <li><i class="fa fa-star-o"></i></li>
+                                    <li class="no-star"><i class="fa fa-star-o"></i></li>
+                                    <li class="no-star"><i class="fa fa-star-o"></i></li>
+                                    <li class="review-item"><a href="#">دفعات بازدید: {{$product->view}}</a></li>
+                                    <li class="review-item"><a href="#">نوشتن نظر</a></li>
+                                </ul>
+                            </div>
+                            <ul class="list-unstyled description">
+                                <li><b>کد محصول :</b> <span itemprop="mpn">محصولات {{$product->id}}</span></li>
+                                <li><b>امتیازات خرید:</b> 700</li>
+                                <li><b>وضعیت موجودی :</b>
+                                    @if($product->depot>0)
+                                        <span style="background: green;padding: 0px 10px 1px;color: #fff;" class="instock">موجود</span>
+                                    @else
+                                        <span style="background: red;padding: 0px 10px 1px;color: #fff;"  class="instock">نا موجود</span>
+                                    @endif
+                                </li>
+                            </ul>
+                            <div class="price-box pt-20">
+                                @if($product->discount>0)
+                                    <span class="price-old" style="text-decoration: line-through;">{{number_format($product->price)}} تومان</span> <span class="new-price new-price-2">{{number_format($product->price*(100-$product->discount)/100)}} تومان</span>
+                                @else
+                                    <span class="new-price new-price-2">{{number_format($product->price)}} تومان </span>
+                                @endif
+                            </div>
+                            <div class="product-desc">
+                                <p>
+                                    <span>{{str_limit($product->excerpt,450)}}</span>
+                                </p>
+                            </div>
+                            <div class="block-reassurance">
+                                <ul>
+                                    <li>
+                                        <div class="reassurance-item">
+                                            <div class="reassurance-icon">
+                                                <i class="fa fa-check-square-o"></i>
+                                            </div>
+                                            <p>سیاست امنیتی (ویرایش با ماژول اطمینان مشتری)</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="reassurance-item">
+                                            <div class="reassurance-icon">
+                                                <i class="fa fa-truck"></i>
+                                            </div>
+                                            <p>سیاست تحویل (ویرایش با ماژول تأمین اعتبار مشتری)</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="reassurance-item">
+                                            <div class="reassurance-icon">
+                                                <i class="fa fa-exchange"></i>
+                                            </div>
+                                            <p> سیاست بازگشت (ویرایش با ماژول اطمینان مشتری)</p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="cart-quantity">
+                                @if($product->depot>0)
+                                <button onclick="addcart(this,'{{$product->id}}')" class="add-to-cart" type="submit">افزودن به سبد خرید</button>
+                                @else
+                                <button class="add-to-cart" type="submit" style="background: #ccc">ناموجود</button>
+                                @endif
+                            </div>
+
+                            <div class="product-additional-info pt-25">
+
+                                @php
+                                    $favorite=App\Favorite::where(['user_id'=>Auth::id(),'product_id'=>$product->id])->first()
+                                @endphp
+                                @if(empty($favorite))
+                                    <a class="wishlist-btn" onclick="favorite(this,{{$product->id}})"><i class="fa fa-heart-o"></i>افزودن به علاقه مندی ها</a>
+                                @else
+                                    <a style="color: red" class="wishlist-btn" onclick="favorite(this,{{$product->id}})"><i class="fa fa-heart-o"></i>افزودن به علاقه مندی ها</a>
+                                @endif
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- content-wraper end -->
+    <!-- Begin Product Area -->
+    <div class="product-area pt-35">
         <div class="container">
             <div class="row">
-                <div class="col-md-12">
-                    <div class="breadcrumb">
-                        <ul>
-                            <li>
-                                <a href="#">خانه</a>
-                            </li>
-                            <li>
-                                <a href="#">محصولات</a>
-                            </li>
-                            <li class="active">
-                                <a href="#">{{$product->title}}</a>
-                            </li>
+                <div class="col-lg-12">
+                    <div class="li-product-tab">
+                        <ul class="nav li-product-menu">
+                            <li><a class="active" data-toggle="tab" href="#description"><span>توضیحات</span></a></li>
+                            <li><a data-toggle="tab" href="#product-details"><span>مشخصات کالا</span></a></li>
+                            <li><a data-toggle="tab" href="#reviews"><span>بررسی ها</span></a></li>
                         </ul>
                     </div>
-                    <h1 class="page-title">{{$product->title}}</h1>
+                    <!-- Begin Li's Tab Menu Content Area -->
                 </div>
-                <!-- end /.col-md-12 -->
             </div>
-            <!-- end /.row -->
-        </div>
-        <!-- end /.container -->
-    </section>
-    <!--================================
-        END BREADCRUMB AREA
-    =================================-->
-
-
-
-    <!--============================================
-    START SINGLE PRODUCT DESCRIPTION AREA
-==============================================-->
-<section class="single-product-desc dir-rtl">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8">
-                <div class="item-preview">
-                    <div class="item__preview-slider">
-                        @foreach($images as $image)
-                        <div class="prev-slide">
-                            <img src="{{asset($image->path)}}" alt="{{$product->title}}">
-                        </div>
-                        @endforeach
+            <div class="tab-content">
+                <div id="description" class="tab-pane active show" role="tabpanel">
+                    <div class="product-description">
+                        <span style="font-family: inherit!important;">
+                            <?= $product->content ?>
+                        </span>
                     </div>
-                    <!-- end /.item--preview-slider -->
-
-                    <div class="item__preview-thumb">
-                        <div class="prev-thumb">
-                            <div class="thumb-slider">
-                                @foreach($images as $image)
-                                <div class="item-thumb">
-                                    <img src="{{asset($image->path)}}" alt="{{$product->title}}">
-                                </div>
-                                @endforeach
-                            </div>
-                            <!-- end /.thumb-slider -->
-
-                            <div class="prev-nav thumb-nav">
-                                <span class="lnr nav-right lnr-arrow-right"></span>
-
-                                <span class="lnr nav-left lnr-arrow-left"></span>
-                            </div>
-                            <!-- end /.prev-nav -->
-                        </div>
-
-                        <div class="item-action">
-                            <div class="action-btns">
-                                <a href="#" class="btn btn--round btn--lg">مشاهده</a>
-                                <a href="#" class="btn btn--round btn--lg btn--icon">
-                                    <span class="lnr lnr-heart"></span>افزودن به علاقه مندی ها </a>
-                            </div>
-                        </div>
-                        <!-- end /.item__action -->
-                    </div>
-                    <!-- end /.item__preview-thumb-->
-
-
                 </div>
-                <!-- end /.item-preview-->
+                <div id="product-details" class="tab-pane" role="tabpanel">
+                    <div class="product-details-manufacturer">
+                        <table class="table table-bordered">
+                            <thead>
 
-                <div class="item-info">
-                    <div class="item-navigation">
-                        <ul class="nav nav-tabs">
-                            <li>
-                                <a href="#product-details" class="active" aria-controls="product-details" role="tab" data-toggle="tab">جزئیات</a>
-                            </li>
-                            <li>
-                                <a href="#product-faq" aria-controls="product-faq" role="tab" data-toggle="tab">مشخصات فنی </a>
-                            </li>
-                            <li>
-                                <a href="#product-comment" aria-controls="product-comment" role="tab" data-toggle="tab">نظرات </a>
-                            </li>
-                            <li>
-                                <a href="#product-support" aria-controls="product-support" role="tab" data-toggle="tab">ارسال نظر</a>
-                            </li>
-                        </ul>
+                            <tr>
+                                <td colspan="2"><strong>مشخصات فنی</strong></td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($featurs as $featur)
+                                <tr>
+                                    <td>{{$featur->title}}</td>
+                                    <td>{{$featur->content}}</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+
+                        </table>
                     </div>
-                    <!-- end /.item-navigation -->
-
-                    <div class="tab-content">
-
-
-                        <div class="fade show tab-pane product-tab active" id="product-details">
-                            <div class="tab-content-wrapper">
-                                <?= $product->content ?>
+                </div>
+                <div id="reviews" class="tab-pane" role="tabpanel">
+                    <div class="product-reviews">
+                        <div class="product-details-comment-block">
+                            @if(Auth::check())
+                            <div class="review-btn" style="margin-bottom: 21px">
+                                <a class="review-links" href="#" data-toggle="modal" data-target="#mymodal">نظرتان را بنویسید!</a>
                             </div>
-                        </div>
-                        <!-- end /.tab-content -->
+                            @else
+                                <h5>
+                                    برای ثبت نظر
+                                    <a href="/login"> وارد شوید</a>
+                                </h5>
 
-                        <div class="fade tab-pane product-tab" id="product-faq">
-                            <div class="tab-content-wrapper">
-                                <div class="panel-group accordion" role="tablist" id="accordion">
-                                    <table class="table table-striped table-bordered">
-                                        <tbody>
-                                        @foreach($featurs as $featur)
-                                            <tr>
-                                                <td>{{$featur->title}}</td>
-                                                <td>{{$featur->content}}</td>
-                                            </tr>
+                            @endif
+                            <div class="li-comment-section">
+                                <ul>
+                                    @foreach($comments as $comment)
+                                        <li>
+                                            <div class="author-avatar pt-15">
+                                                <img src="{{asset('limupa/images/product-details/user.png')}}" alt="User">
+                                            </div>
+                                            <div class="comment-body pl-15">
+
+                                                <h5 class="comment-author pt-15">{{$comment->name}}</h5>
+                                                <div class="comment-post-date">
+                                                    {{Verta::instance($comment->created_at)->format(' %d %B %Y')}}
+                                                </div>
+                                                <p>{{$comment->content}}</p>
+                                            </div>
+                                        </li>
+                                        @php $comments_ansswers=App\Comment::where('parent',$comment->id)->get() @endphp
+                                        @foreach($comments_ansswers as $comments_ansswer)
+                                            <li class="comment-children">
+                                                <div class="author-avatar pt-15">
+                                                    <img src="{{asset('limupa/images/product-details/admin.png')}}" alt="Admin">
+                                                </div>
+                                                <div class="comment-body pl-15">
+
+                                                    <h5 class="comment-author pt-15">مدیر</h5>
+                                                    <div class="comment-post-date">
+                                                        {{Verta::instance($comments_ansswer->created_at)->format(' %d %B %Y')}}
+                                                    </div>
+                                                    <p>{{$comments_ansswer->content}}
+                                                    </p>
+                                                </div>
+                                            </li>
                                         @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <!-- end /.accordion -->
-                            </div>
-
-                        </div>
-                        <!-- end /.product-faq -->
-
-                        <div class="fade tab-pane product-tab" id="product-comment">
-                            <div class="thread">
-                                <ul class="media-list thread-list">
-                                    <li class="single-thread">
-                                        <div class="media">
-                                            <div class="media-left">
-                                                <a href="#">
-                                                    <img class="media-object" src="images/new/m1.png" alt="Commentator Avatar">
-                                                </a>
-                                            </div>
-                                            <div class="media-body">
-                                                <div>
-                                                    <div class="media-heading">
-                                                        <a href="author.html">
-                                                            <h4>علی</h4>
-                                                        </a>
-                                                        <span>9 ساعت پیش </span>
-                                                    </div>
-                                                    <span class="comment-tag buyer">خریدار</span>
-                                                    <a href="#" class="reply-link">پاسخ </a>
-                                                </div>
-                                                <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است.  </p>
-                                            </div>
-                                        </div>
-
-                                        <!-- nested comment markup -->
-                                        <ul class="children">
-                                            <li class="single-thread depth-2">
-                                                <div class="media">
-                                                    <div class="media-left">
-                                                        <a href="#">
-                                                            <img class="media-object" src="images/new/m2.png" alt="Commentator Avatar">
-                                                        </a>
-                                                    </div>
-                                                    <div class="media-body">
-                                                        <div class="media-heading">
-                                                            <h4>رضا</h4>
-                                                            <span>6 ساعت پیش</span>
-                                                        </div>
-                                                        <span class="comment-tag author">طراح</span>
-                                                        <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است.  </p>
-                                                    </div>
-                                                </div>
-
-                                            </li>
-                                            <li class="single-thread depth-2">
-                                                <div class="media">
-                                                    <div class="media-left">
-                                                        <a href="#">
-                                                            <img class="media-object" src="images/new/m2.png" alt="Commentator Avatar">
-                                                        </a>
-                                                    </div>
-                                                    <div class="media-body">
-                                                        <div class="media-heading">
-                                                            <h4>رضا</h4>
-                                                            <span>6 ساعت پیش</span>
-                                                        </div>
-                                                        <span class="comment-tag author">طراح</span>
-                                                        <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است.  </p>
-                                                    </div>
-                                                </div>
-
-                                            </li>
-
-                                        </ul>
-
-                                        <!-- comment reply -->
-                                        <div class="media depth-2 reply-comment">
-                                            <div class="media-left">
-                                                <a href="#">
-                                                    <img class="media-object" src="images/new/m2.png" alt="Commentator Avatar">
-                                                </a>
-                                            </div>
-                                            <div class="media-body">
-                                                <form action="#" class="comment-reply-form">
-                                                    <textarea class="bla" name="reply-comment" placeholder="Write your comment..."></textarea>
-                                                    <button class="btn btn--md btn--round">Post Comment</button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                        <!-- comment reply -->
-                                    </li>
-                                    <!-- end single comment thread /.comment-->
-                                    <li class="single-thread">
-                                        <div class="media">
-                                            <div class="media-left">
-                                                <a href="#">
-                                                    <img class="media-object" src="images/new/m3.png" alt="Commentator Avatar">
-                                                </a>
-                                            </div>
-                                            <div class="media-body">
-                                                <div>
-                                                    <div class="media-heading">
-                                                        <a href="author.html">
-                                                            <h4>تقی</h4>
-                                                        </a>
-                                                        <span>5 ساعت پیش </span>
-                                                    </div>
-                                                    <a href="#" class="reply-link">پاسخ </a>
-                                                </div>
-                                                <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. </p>
-                                            </div>
-                                        </div>
-
-                                        <!-- comment reply -->
-                                        <div class="media depth-2 reply-comment">
-                                            <div class="media-left">
-                                                <a href="#">
-                                                    <img class="media-object" src="images/new/m2.png" alt="Commentator Avatar">
-                                                </a>
-                                            </div>
-                                            <div class="media-body">
-                                                <form action="#" class="comment-reply-form">
-                                                    <textarea name="reply-comment" placeholder="نظر خود را بنویسید "></textarea>
-                                                    <button class="btn btn--sm btn--round">ارسال نظر </button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                        <!-- comment reply -->
-                                    </li>
-                                    <!-- end single comment thread /.comment-->
-                                    <li class="single-thread">
-                                        <div class="media">
-                                            <div class="media-left">
-                                                <a href="#">
-                                                    <img class="media-object" src="images/new/m3.png" alt="Commentator Avatar">
-                                                </a>
-                                            </div>
-                                            <div class="media-body">
-                                                <div>
-                                                    <div class="media-heading">
-                                                        <a href="author.html">
-                                                            <h4>تقی</h4>
-                                                        </a>
-                                                        <span>5 ساعت پیش </span>
-                                                    </div>
-                                                    <a href="#" class="reply-link">پاسخ </a>
-                                                </div>
-                                                <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. </p>
-                                            </div>
-                                        </div>
-
-                                        <!-- comment reply -->
-                                        <div class="media depth-2 reply-comment">
-                                            <div class="media-left">
-                                                <a href="#">
-                                                    <img class="media-object" src="images/new/m2.png" alt="Commentator Avatar">
-                                                </a>
-                                            </div>
-                                            <div class="media-body">
-                                                <form action="#" class="comment-reply-form">
-                                                    <textarea name="reply-comment" placeholder="نظر خود را بنویسید "></textarea>
-                                                    <button class="btn btn--sm btn--round">ارسال نظر </button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                        <!-- comment reply -->
-                                    </li>
-                                    <!-- end single comment thread /.comment-->
-                                    <li class="single-thread">
-                                        <div class="media">
-                                            <div class="media-left">
-                                                <a href="#">
-                                                    <img class="media-object" src="images/new/m3.png" alt="Commentator Avatar">
-                                                </a>
-                                            </div>
-                                            <div class="media-body">
-                                                <div>
-                                                    <div class="media-heading">
-                                                        <a href="author.html">
-                                                            <h4>تقی</h4>
-                                                        </a>
-                                                        <span>5 ساعت پیش </span>
-                                                    </div>
-                                                    <a href="#" class="reply-link">پاسخ </a>
-                                                </div>
-                                                <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. </p>
-                                            </div>
-                                        </div>
-
-                                        <!-- comment reply -->
-                                        <div class="media depth-2 reply-comment">
-                                            <div class="media-left">
-                                                <a href="#">
-                                                    <img class="media-object" src="images/new/m2.png" alt="Commentator Avatar">
-                                                </a>
-                                            </div>
-                                            <div class="media-body">
-                                                <form action="#" class="comment-reply-form">
-                                                    <textarea name="reply-comment" placeholder="نظر خود را بنویسید "></textarea>
-                                                    <button class="btn btn--sm btn--round">ارسال نظر </button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                        <!-- comment reply -->
-                                    </li>
-                                    <!-- end single comment thread /.comment-->
-
-
+                                    @endforeach
                                 </ul>
-                                <!-- end /.media-list -->
+                            </div>
 
-                                <div class="pagination-area pagination-area2">
-                                    <nav class="navigation pagination" role="navigation">
-                                        <div class="nav-links">
-                                            <a class="page-numbers current" href="#">1</a>
-                                            <a class="page-numbers" href="#">2</a>
-                                            <a class="page-numbers" href="#">3</a>
-                                            <a class="prev page-numbers" href="#">
-                                                <span class="lnr lnr-arrow-left"></span>
-                                            </a>
-                                        </div>
-                                    </nav>
-                                </div>
-                                <!-- end /.comment pagination area -->
 
-                                <div class="comment-form-area">
-                                    <h4> پیام بگذارید</h4>
-                                    <!-- comment reply -->
-                                    <div class="media comment-form">
-                                        <div class="media-left">
-                                            <a href="#">
-                                                <img class="media-object" src="images/new/m7.png" alt="Commentator Avatar">
-                                            </a>
-                                        </div>
-                                        <div class="media-body">
-                                            <form action="#" class="comment-reply-form">
-                                                <textarea name="reply-comment" placeholder="نظر خود را بنویسید ..."></textarea>
-                                                <button class="btn btn--sm btn--round">ارسال نظر </button>
-                                            </form>
+
+                            <!-- Begin Quick View | Modal Area -->
+                            <div class="modal fade modal-wrapper" id="mymodal" >
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <h3 class="review-page-title">نظرتان را بنویسید</h3>
+                                            <div class="modal-inner-area row">
+                                                <div class="col-lg-6">
+                                                    <div class="li-review-product">
+                                                        <img src="images/product/large-size/3.jpg" alt="Li's Product">
+                                                        <div class="li-review-product-desc">
+                                                            <p class="li-product-name">{{$product->title}}</p>
+                                                            <p>
+                                                                <span>دوربین ساحل منحصر به فرد بسته نرم افزاری - شامل دو سامسونگ تابشی 360 بلندگو R3 وای فای بلوتوث. تمام اتاق را با صدای عالی از طریق فن آوری رادیاتور حلقه پر کنید. جریان و کنترل R3 بلندگو بی سیم با گوشی های هوشمند خود. پیشرفته، طراحی مدرن </span>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="li-review-content">
+                                                        <!-- Begin Feedback Area -->
+                                                        <div class="feedback-area">
+                                                            <div class="feedback">
+                                                                <h3 class="feedback-title">بازخورد ما</h3>
+                                                                <form action="#">
+                                                                    <p class="your-opinion">
+                                                                        <label>امتیاز شما</label>
+                                                                        <span>
+                                                                                    <select class="star-rating">
+                                                                                      <option value="1">1</option>
+                                                                                      <option value="2">2</option>
+                                                                                      <option value="3">3</option>
+                                                                                      <option value="4">4</option>
+                                                                                      <option value="5">5</option>
+                                                                                    </select>
+                                                                                </span>
+                                                                    </p>
+                                                                    <p class="feedback-form">
+                                                                        <label for="feedback">نظر شما</label>
+                                                                        <textarea id="feedback" name="comment" cols="45" rows="8" aria-required="true"></textarea>
+                                                                    </p>
+                                                                    <div class="feedback-input">
+                                                                        <p class="feedback-form-author">
+                                                                            <label for="author">نام<span class="required">*</span>
+                                                                            </label>
+                                                                            <input id="author" name="author" value="" size="30" aria-required="true" type="text">
+                                                                        </p>
+                                                                        <p class="feedback-form-author feedback-form-email">
+                                                                            <label for="email">ایمیل<span class="required">*</span>
+                                                                            </label>
+                                                                            <input id="email" name="email" value="" size="30" aria-required="true" type="text">
+                                                                            <span class="required"><sub>*</sub> فیلدهای مورد نیاز</span>
+                                                                        </p>
+                                                                        <div class="feedback-btn pb-15">
+                                                                            <a href="#" class="close" data-dismiss="modal" aria-label="بستن">بستن</a>
+                                                                            <a href="#">تایید</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Feedback Area End Here -->
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <!-- comment reply -->
                                 </div>
-                                <!-- end /.comment-form-area -->
                             </div>
-                            <!-- end /.comments -->
+                            <!-- Quick View | Modal Area End Here -->
                         </div>
-                        <!-- end /.product-comment -->
-
-                        <div class="fade tab-pane product-tab" id="product-support">
-                            <div class="support">
-                                <div class="support__title">
-                                    <h3>با نویسنده تماس بگیرید</h3>
-                                </div>
-                                <div class="support__form">
-                                    <div class="usr-msg">
-                                        <p>لطفا برای ارسال نظر
-                                            <a href="login.html">وارد </a>شوید.</p>
-
-                                        <form action="#" class="پشتیبانی_form">
-                                            <div class="form-group">
-                                                <label for="subj">موضوع:</label>
-                                                <input type="text" id="subj" class="text_field" placeholder="موضوع خود را وارد کنید ">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Product Area End Here -->
+    <!-- Begin Li's Laptop Product Area -->
+    <section class="product-area li-laptop-product pt-30 pb-50">
+        <div class="container">
+            <div class="row">
+                <!-- Begin Li's Section Area -->
+                <div class="col-lg-12">
+                    <div class="li-section-title">
+                        <h2>
+                            <span>15 محصول دیگر در همان رده:</span>
+                        </h2>
+                    </div>
+                    <div class="row">
+                        <div class="product-active owl-carousel">
+                            @foreach($like_products as $item)
+                                <div class="col-lg-12">
+                                    <!-- single-product-wrap start -->
+                                    <div class="single-product-wrap">
+                                        <div class="product-image">
+                                            <a href="/product/{{$item->slug}}">
+                                                <img src="{{asset($item->image)}}" alt="{{$item->title}}">
+                                            </a>
+                                            @if($item->discount>0)
+                                                <span class="sticker">-{{$item->discount}}%</span>
+                                            @endif
+                                        </div>
+                                        <div class="product_desc">
+                                            <div class="product_desc_info">
+                                                <div class="product-review">
+                                                    {{--  <h5 style="    margin-bottom: 22px;" class="manufacturer">
+                                                          <a href="/product/{{$item->slug}}"></a>
+                                                      </h5>
+                                                      <div class="rating-box">
+                                                          <ul class="rating">
+                                                              <li><i class="fa fa-star-o"></i></li>
+                                                              <li><i class="fa fa-star-o"></i></li>
+                                                              <li><i class="fa fa-star-o"></i></li>
+                                                              <li class="no-star"><i class="fa fa-star-o"></i></li>
+                                                              <li class="no-star"><i class="fa fa-star-o"></i></li>
+                                                          </ul>
+                                                      </div>--}}
+                                                </div>
+                                                <h4><a class="product_name" href="/product/{{$item->slug}}">{{str_limit($item->title,40)}}</a></h4>
+                                                <div class="price-box">
+                                                    @if($item->discount>0)
+                                                        <span class="old-price">{{number_format($item->price)}} تومان</span>
+                                                        <span class="new-price">{{number_format($item->price*(100-$item->discount)/100)}} تومان</span>
+                                                    @else
+                                                        <span class="new-price">{{number_format($item->price)}} تومان</span>
+                                                    @endif
+                                                </div>
                                             </div>
-
-                                            <div class="form-group">
-                                                <label for="supmsg">متن : </label>
-                                                <textarea class="text_field" id="supmsg" name="supmsg" placeholder="متن خود را وارد کنید ..."></textarea>
+                                            <div class="add-actions">
+                                                <ul class="add-actions-link">
+                                                    <li class="add-cart active" onclick="addcart(this,'{{$item->id}}')"><a href="#">افزودن به سبد خرید</a></li>
+                                                    @php
+                                                        $favorite=App\Favorite::where(['user_id'=>Auth::id(),'product_id'=>$item->id])->first()
+                                                    @endphp
+                                                    @if(empty($favorite))
+                                                        <li><a class="links-details" onclick="favorite(this,{{$item->id}})" title="افزودن به علاقه مندی"><i class="fa fa-heart-o"></i></a></li>
+                                                    @else
+                                                        <li><a class="links-details" onclick="favorite(this,{{$item->id}})" title="افزودن به علاقه مندی"><i style="color: red" class="fa fa-heart-o"></i></a></li>
+                                                    @endif
+                                                    <li><a href="/product/{{$item->slug}}" title="مشاهده " class="quick-view-btn"><i class="fa fa-eye"></i></a></li>
+                                                </ul>
                                             </div>
-                                            <button type="submit" class="btn btn--lg btn--round">ارسال </button>
-                                        </form>
+                                        </div>
                                     </div>
+                                    <!-- single-product-wrap end -->
                                 </div>
-                            </div>
+                            @endforeach
                         </div>
-                        <!-- end /.product-support -->
-
                     </div>
-                    <!-- end /.tab-content -->
                 </div>
-                <!-- end /.item-info -->
+                <!-- Li's Section Area End Here -->
             </div>
-            <!-- end /.col-md-8 -->
-
-            <div class="col-lg-4">
-                <aside class="sidebar sidebar--single-product">
-                    <div class="sidebar-card card-pricing">
-                        <div class="price">
-                            <h1>
-                                20<sup>تومان</sup> -
-                                60 <sup>تومان</sup></h1>
-                        </div>
-                        <ul class="pricing-options">
-                            <li>
-                                <div class="custom-radio">
-                                    <input type="radio" id="opt1" class="" name="filter_opt" checked>
-                                    <label for="opt1">
-                                        <span class="circle"></span>مجوز یک سایت  –
-                                        <span class="pricing__opt">100 تومان</span>
-                                    </label>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="custom-radio">
-                                    <input type="radio" id="opt2" class="" name="filter_opt">
-                                    <label for="opt2">
-                                        <span class="circle"></span>مجوز دو سایت –
-                                        <span class="pricing__opt">400 تومان</span>
-                                    </label>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="custom-radio">
-                                    <input type="radio" id="opt3" class="" name="filter_opt">
-                                    <label for="opt3">
-                                        <span class="circle"></span>مجوز چند سایت –
-                                        <span class="pricing__opt">400 تومان</span>
-                                    </label>
-                                </div>
-                            </li>
-                        </ul>
-                        <!-- end /.pricing-options -->
-
-                        <div class="purchase-button">
-                            <a href="#" class="btn btn--lg btn--round">هم اکنون بخرید</a>
-                            <a href="#" class="btn btn--lg btn--round cart-btn">
-                                <span class="lnr lnr-cart"></span> افودن به سبد خرید </a>
-                        </div>
-                        <!-- end /.purchase-button -->
-                    </div>
-                    <!-- end /.sidebar--card -->
-
-                </aside>
-                <!-- end /.aside -->
-            </div>
-            <!-- end /.col-md-4 -->
         </div>
-        <!-- end /.row -->
-    </div>
-    <!-- end /.container -->
-</section>
-<!--===========================================
-    END SINGLE PRODUCT DESCRIPTION AREA
-===============================================-->
-
-<!--============================================
-    START MORE PRODUCT ARE
-==============================================-->
-<section class="more_product_area section--padding dir-rtl">
-    <div class="container">
-        <div class="row">
-            <!-- start col-md-12 -->
-            <div class="col-md-12">
-                <div class="section-title">
-                    <h1>محصولات بیشتر از
-                        <span class="highlighted">دامن دریا </span>
-                    </h1>
-                </div>
-            </div>
-            <!-- end /.col-md-12 -->
-
-            <!-- start .col-md-4 -->
-            <div class="col-lg-4 col-md-6">
-                <!-- start .single-product -->
-                <div class="product product--card product--card2">
-
-                    <div class="product__thumbnail">
-                        <img src="images/new/p1.jpg" alt="Product Image">
-                        <div class="prod_btn">
-                            <a href="single-product.html" class="transparent btn--sm btn--round">اطلاعات بیشتر </a>
-                            <a href="single-product.html" class="transparent btn--sm btn--round">مشاهده </a>
-                        </div>
-                        <!-- end /.prod_btn -->
-                    </div>
-                    <!-- end /.product__thumbnail -->
-
-                    <div class="product-desc">
-                        <a href="#" class="product_title">
-                            <h4>قالب فروشگاهی حوملا </h4>
-                        </a>
-
-                        <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. </p>
-                    </div>
-                    <!-- end /.product-desc -->
-
-                    <ul class="titlebtm">
-                        <li class="product_cat">
-                            <a href="#">
-                                <span class="lnr lnr-book"></span>افزونه ها </a>
-                        </li>
-                        <li class="rating product--rating">
-                            <ul>
-                                <li>
-                                    <span class="fa fa-star"></span>
-                                </li>
-                                <li>
-                                    <span class="fa fa-star"></span>
-                                </li>
-                                <li>
-                                    <span class="fa fa-star"></span>
-                                </li>
-                                <li>
-                                    <span class="fa fa-star"></span>
-                                </li>
-                                <li>
-                                    <span class="fa fa-star"></span>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-
-                    <div class="product-purchase">
-                        <div class="price_love">
-                            <span>10 تومان  - 50 تومان </span>
-                            <p>
-                                <span class="lnr lnr-heart"></span> 90</p>
-                        </div>
-                        <div class="sell">
-                            <p>
-                                <span class="lnr lnr-cart"></span>
-                                <span>16</span></p>
-                        </div>
-                    </div>
-                    <!-- end /.product-purchase -->
-                </div>
-                <!-- end /.single-product -->
-            </div>
-            <!-- end /.col-md-4 -->
-
-            <!-- start .col-md-4 -->
-            <div class="col-lg-4 col-md-6">
-                <!-- start .single-product -->
-                <div class="product product--card product--card2">
-
-                    <div class="product__thumbnail">
-                        <img src="images/new/p1.jpg" alt="Product Image">
-                        <div class="prod_btn">
-                            <a href="single-product.html" class="transparent btn--sm btn--round">اطلاعات بیشتر </a>
-                            <a href="single-product.html" class="transparent btn--sm btn--round">مشاهده </a>
-                        </div>
-                        <!-- end /.prod_btn -->
-                    </div>
-                    <!-- end /.product__thumbnail -->
-
-                    <div class="product-desc">
-                        <a href="#" class="product_title">
-                            <h4>قالب فروشگاهی حوملا </h4>
-                        </a>
-
-                        <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. </p>
-                    </div>
-                    <!-- end /.product-desc -->
-
-                    <ul class="titlebtm">
-                        <li class="product_cat">
-                            <a href="#">
-                                <span class="lnr lnr-book"></span>افزونه ها </a>
-                        </li>
-                        <li class="rating product--rating">
-                            <ul>
-                                <li>
-                                    <span class="fa fa-star"></span>
-                                </li>
-                                <li>
-                                    <span class="fa fa-star"></span>
-                                </li>
-                                <li>
-                                    <span class="fa fa-star"></span>
-                                </li>
-                                <li>
-                                    <span class="fa fa-star"></span>
-                                </li>
-                                <li>
-                                    <span class="fa fa-star"></span>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-
-                    <div class="product-purchase">
-                        <div class="price_love">
-                            <span>10 تومان  - 50 تومان </span>
-                            <p>
-                                <span class="lnr lnr-heart"></span> 90</p>
-                        </div>
-                        <div class="sell">
-                            <p>
-                                <span class="lnr lnr-cart"></span>
-                                <span>16</span></p>
-                        </div>
-                    </div>
-                    <!-- end /.product-purchase -->
-                </div>
-                <!-- end /.single-product -->
-            </div>
-            <!-- end /.col-md-4 -->
-
-            <!-- start .col-md-4 -->
-            <div class="col-lg-4 col-md-6">
-                <!-- start .single-product -->
-                <div class="product product--card product--card2">
-
-                    <div class="product__thumbnail">
-                        <img src="images/new/p1.jpg" alt="Product Image">
-                        <div class="prod_btn">
-                            <a href="single-product.html" class="transparent btn--sm btn--round">اطلاعات بیشتر </a>
-                            <a href="single-product.html" class="transparent btn--sm btn--round">مشاهده </a>
-                        </div>
-                        <!-- end /.prod_btn -->
-                    </div>
-                    <!-- end /.product__thumbnail -->
-
-                    <div class="product-desc">
-                        <a href="#" class="product_title">
-                            <h4>قالب فروشگاهی حوملا </h4>
-                        </a>
-
-                        <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. </p>
-                    </div>
-                    <!-- end /.product-desc -->
-
-                    <ul class="titlebtm">
-                        <li class="product_cat">
-                            <a href="#">
-                                <span class="lnr lnr-book"></span>افزونه ها </a>
-                        </li>
-                        <li class="rating product--rating">
-                            <ul>
-                                <li>
-                                    <span class="fa fa-star"></span>
-                                </li>
-                                <li>
-                                    <span class="fa fa-star"></span>
-                                </li>
-                                <li>
-                                    <span class="fa fa-star"></span>
-                                </li>
-                                <li>
-                                    <span class="fa fa-star"></span>
-                                </li>
-                                <li>
-                                    <span class="fa fa-star"></span>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-
-                    <div class="product-purchase">
-                        <div class="price_love">
-                            <span>10 تومان  - 50 تومان </span>
-                            <p>
-                                <span class="lnr lnr-heart"></span> 90</p>
-                        </div>
-                        <div class="sell">
-                            <p>
-                                <span class="lnr lnr-cart"></span>
-                                <span>16</span></p>
-                        </div>
-                    </div>
-                    <!-- end /.product-purchase -->
-                </div>
-                <!-- end /.single-product -->
-            </div>
-            <!-- end /.col-md-4 -->
-
-        </div>
-        <!-- end /.container -->
-    </div>
-    <!-- end /.container -->
-</section>
-<!--============================================
-    END MORE PRODUCT AREA
-==============================================-->
+    </section>
+    <!-- Li's Laptop Product Area End Here -->
 
 @endsection
 

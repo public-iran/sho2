@@ -2,352 +2,186 @@
 @section('style_link')
 @endsection
 @section('style')
+    <style>
+        .li-blog-sidebar .li-recent-post .li-recent-post-thumb{
+            border: none!important;
+        }
+    </style>
 @endsection
 @section('content')
-    <!--================================
-    START BREADCRUMB AREA
-=================================-->
-    <section class="breadcrumb-area dir-rtl">
+    <!-- Begin Li's Breadcrumb Area -->
+    <div class="breadcrumb-area">
         <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="breadcrumb">
-                        <ul>
-                            <li>
-                                <a href="/">خانه</a>
-                            </li>
-                            <li class="active">
-                                <a href="/blog">صفحه پست </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <h1 class="page-title">صفحه پست </h1>
-                </div>
-                <!-- end /.col-md-12 -->
+            <div class="breadcrumb-content">
+                <ul>
+                    <li><a href="index.html">خانه</a></li>
+                    <li class="active">جزئیات وبلاگ با نوارکناری</li>
+                </ul>
             </div>
-            <!-- end /.row -->
         </div>
-        <!-- end /.container -->
-    </section>
-    <!--================================
-        END BREADCRUMB AREA
-    =================================-->
-
-    <!--================================
-            START LOGIN AREA
-    =================================-->
-    <section class="blog_area section--padding2 dir-rtl">
+    </div>
+    <!-- Li's Breadcrumb Area End Here -->
+    <!-- Begin Li's Main Blog Page Area -->
+    <div class="li-main-blog-page li-main-blog-details-page pt-60 pb-60 pb-sm-45 pb-xs-45">
         <div class="container">
             <div class="row">
-                <div class="col-lg-8">
-                    <div class="single_blog blog--default">
-                        <article>
-                            <figure>
-                                <img src="{{asset($post->imgPath)}}" alt="{{$post->title}}">
-                            </figure>
-                            <div class="blog__content">
-                                <a href="#" class="blog__title">
-                                    <h1>{{$post->title}}</h1>
-                                </a>
-
-                                <div class="blog__meta mt-3">
-                                   {{-- <div class="author">
-                                        <span class="lnr lnr-user"></span>
-                                        <p>خرید از
-                                            <a href="#">دامن دریا </a>
-                                        </p>
-                                    </div>--}}
-                                    <div class="date_time">
-                                        <i class="lnr lnr-clock"></i>
-                                        <p>{{Verta::instance($post->updated_at)->format(' %d %B %Y')}}
-                                        </p>
-                                    </div>
-                                    <div class="comment_view">
-                                        <p class="comment">
-                                            <i class="lnr lnr-bubble"></i>{{count($comments)}}</p>
-                                        <p class="view">
-                                            <i class="lnr lnr-eye"></i>{{$post->view}}</p>
-                                    </div>
-                                </div>
+                <!-- Begin Li's Blog Sidebar Area -->
+                <div class="col-lg-3 order-lg-1 order-2">
+                    <div class="li-blog-sidebar-wrapper">
+                        <div class="li-blog-sidebar">
+                            <div class="li-sidebar-search-form">
+                                <form action="{{route('post_search')}}">
+                                    <input type="text" name="title" class="li-search-field" placeholder="جستجو در اینجا">
+                                    <button type="submit" class="li-search-btn"><i class="fa fa-search"></i></button>
+                                </form>
                             </div>
-                            <div class="single_blog_content">
-                                <?= $post->content ?>
-                            </div>
-                        </article>
-                    </div>
-                    <!-- end /.single_blog -->
-
-                   {{-- <div class="author_info">
-                        <div class="author__img">
-                            <img src="images/new/authi.jpg" alt="Auth Image">
                         </div>
-
-                        <div class="author__info">
-                            <h4>درباره نویسنه </h4>
-                            <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است.
-
-                            </p>
-                            <ul>
-                                <li>
-                                    <a href="#">
-                                        <span class="fa fa-facebook"></span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <span class="fa fa-twitter"></span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <span class="fa fa-google-plus"></span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <span class="fa fa-linkedin"></span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>--}}
-                    <!-- end /.author_info -->
-
-                    <div class="comment_area">
-                        <div class="comment__title">
-                            <h4>نظرات </h4>
-                        </div>
-
-                        <div class="comment___wrapper">
-                            <ul class="media-list">
-                                @foreach($comments as $comment)
-                                <li class="depth-1">
-                                    <div class="media">
-                                        <div class="pull-right no-pull-xs">
-                                            <a href="#" class="cmnt_avatar">
-                                                <img src="{{asset('darya/images/new/comavatar2.jpg')}}" class="media-object" alt="Sample Image">
-                                            </a>
-                                        </div>
-                                        <div class="media-body" >
-                                            <div class="media_top">
-                                                <div class="heading_left pull-right">
-                                                    <a href="#">
-                                                        <h4 class="media-heading">{{$comment->name}}</h4>
-                                                    </a>
-                                                    <span>{{Verta::instance($comment->created_at)->format(' %d %B %Y')}}</span>
-                                                </div>
-                                                {{--<a href="#" class="reply hidden-xs-m pull-left">پاسخ </a>--}}
-                                            </div>
-                                            <p>{{$comment->content}}</p>
-                                         {{--   <a href="#" class="reply visible-xs-m  pull-left">پاسخ </a>--}}
-                                        </div>
-                                    </div>
-
-                                    <ul class="children">
-                                        <!-- Nested media object -->
-                                        @php $comments_ansswers=App\Post_comments::where('parent',$comment->id)->get() @endphp
-                                        @foreach($comments_ansswers as $comments_ansswer)
-                                        <li class="depth-2">
-                                            <div class="media">
-                                                <div class="pull-right no-pull-xs">
-                                                    <a href="#" class="cmnt_avatar">
-                                                        <img src="{{asset('darya/images/new/comavatar.jpg')}}" class="media-object" alt="Sample Image">
-                                                    </a>
-                                                </div>
-                                                <div class="media-body">
-                                                    <div class="media_top">
-                                                        <div class="heading_left pull-right">
-                                                            <a href="#">
-                                                                <h4 class="media-heading">مدیر</h4>
-                                                            </a>
-                                                            <span>{{Verta::instance($comments_ansswer->created_at)->format(' %d %B %Y')}}</span>
-                                                        </div>
-                                                       {{-- <a href="#" class="reply hidden-xs-m pull-left">
-                                                            پاسخ
-                                                        </a>--}}
-                                                    </div>
-                                                    <p>{{$comments_ansswer->content}}
-                                                    </p>
-                                                    {{--<a href="#" class="reply visible-xs-m pull-left">پاسخ </a>--}}
-                                                </div>
-                                            </div>
-                                        </li>
-                                        @endforeach
-                                    </ul>
-                                </li>
+                        <div class="li-blog-sidebar pt-25">
+                            <h4 class="li-blog-sidebar-title">دسته ها</h4>
+                            <ul class="li-blog-archive">
+                                @foreach($categories as $category)
+                                <li><a href="/blog?cat={{$category->slug}}">{{$category->title}}</a></li>
                                 @endforeach
                             </ul>
                         </div>
-                        <!-- end /.comment___wrapper -->
-                    </div>
-                    <!-- end /.col-md-8 -->
 
-                    <div class="comment_area comment--form">
-                        <!-- start reply_form -->
-                        <div class="comment__title">
-                            <h4>نظر خود را بنویسید </h4>
-                        </div>
-                        <div class="commnet_form_wrapper">
-                            <div class="row">
-                                <!-- start form -->
-                                <form class="cmnt_reply_form" action="{{route('comment_post_store')}}" method="post">
-                                    @csrf
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <input class="input_field" name="name" type="text" placeholder="نام " required="">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <input class="input_field" name="email" type="email" placeholder="ایمیل " required="">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <textarea class="input_field" name="content" placeholder="متن خود را بنویسید " rows="10" cols="80"></textarea>
-                                            <input type="hidden" name="post" value="{{$post->id}}">
-                                        </div>
-
-                                        <button type="submit" class="btn btn--round btn--default" name="btn">ثبت نظر </button>
-                                    </div>
-                                </form>
-                                <!-- end form -->
-                            </div>
-                        </div>
-                        <!-- end /.commnet_form_wrapper -->
-                    </div>
-                    <!-- end /.comment_area_wrapper -->
-                </div>
-                <!-- end /.col-md-8 -->
-
-                <div class="col-lg-4">
-                    <aside class="sidebar sidebar--blog">
-                        <div class="sidebar-card card--search card--blog_sidebar">
-                            <div class="card-title">
-                                <h4>جستحو در مقالات </h4>
-                            </div>
-                            <!-- end /.card-title -->
-
-                            <div class="card_content">
-                                <form action="{{route('post_search')}}">
-                                    <div class="searc-wrap">
-                                        <input type="text" name="title" placeholder="عنوان مقاله را وارد کنید...">
-                                        <button type="submit" class="search-wrap__btn">
-                                            <i class="lnr lnr-magnifier"></i>
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                            <!-- end /.card_content -->
-                        </div>
-                        <!-- end /.sidebar-card -->
-
-                        <div class="sidebar-card sidebar--post card--blog_sidebar">
-                            <div class="card-title">
-                                <!-- Nav tabs -->
-                                <ul class="nav post-tab" role="tablist">
-                                    <li>
-                                        <a href="#popular" class="active" id="popular-tab" aria-controls="popular" role="tab" data-toggle="tab" aria-selected="true">پربازدید ترین ها </a>
-                                    </li>
-                                    <li>
-                                        <a href="#latest" id="latest-tab" aria-controls="latest" role="tab" data-toggle="tab" aria-selected="false">اخرین مقالات </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <!-- end /.card-title -->
-
-                            <div class="card_content">
-                                <!-- Tab panes -->
-                                <div class="tab-content">
-                                    <div role="tabpanel" class="tab-pane active fade show" id="popular" aria-labelledby="popular-tab">
-                                        <ul class="post-list">
-                                            @foreach($last_posts as $post)
-                                                <li>
-                                                    <div class="thumbnail_img">
-                                                        <img src="{{asset($post->imgPath)}}" alt="{{$post->title}}">
-                                                    </div>
-                                                    <div class="title_area">
-                                                        <a href="#">
-                                                            <h4>{{str_limit($post->title,40)}} </h4>
-                                                        </a>
-                                                        <div class="date_time">
-                                                            <i class="lnr lnr-clock"></i>
-                                                            <p>{{Verta::instance($post->updated_at)->format(' %d %B %Y')}}</p>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                        <!-- end /.post-list -->
-                                    </div>
-                                    <!-- end /.tabpanel -->
-
-                                    <div role="tabpanel" class="tab-pane fade" id="latest" aria-labelledby="latest-tab">
-                                        <ul class="post-list">
-                                            @foreach($posts_view as $post)
-                                                <li>
-                                                    <div class="thumbnail_img">
-                                                        <img src="{{asset($post->imgPath)}}" alt="{{$post->title}}">
-                                                    </div>
-                                                    <div class="title_area">
-                                                        <a href="#">
-                                                            <h4>{{str_limit($post->title,40)}} </h4>
-                                                        </a>
-                                                        <div class="date_time">
-                                                            <i class="lnr lnr-clock"></i>
-                                                            <p>{{Verta::instance($post->updated_at)->format(' %d %B %Y')}}</p>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            @endforeach
-                                        </ul>                                    <!-- end /.post-list -->
-                                    </div>
-                                    <!-- end /.tabpanel -->
+                        <div class="li-blog-sidebar">
+                            <h4 class="li-blog-sidebar-title">آخرین پست</h4>
+                            @foreach($last_posts as $post)
+                            <div class="li-recent-post pb-30">
+                                <div class="li-recent-post-thumb">
+                                    <a href="/blog/{{$post->slug}}">
+                                        <img class="img-full" src="{{asset($post->imgPath)}}" alt="{{$post->title}}">
+                                    </a>
                                 </div>
-                                <!-- end /.tab-content -->
+                                <div class="li-recent-post-des">
+                                    <span><a href="/blog/{{$post->slug}}">{{str_limit($post->title,40)}}</a></span>
+                                    <span class="li-post-date">{{Verta::instance($post->updated_at)->format(' %d %B %Y')}}</span>
+                                </div>
                             </div>
-                            <!-- end /.card_content -->
+                            @endforeach
                         </div>
-                        <!-- end /.sidebar-card -->
 
-                        <div class="sidebar-card card--blog_sidebar card--category">
-                            <div class="card-title">
-                                <h4>دسته بندی </h4>
+                    </div>
+                </div>
+                <!-- Li's Blog Sidebar Area End Here -->
+                <!-- Begin Li's Main Content Area -->
+                <div class="col-lg-9 order-lg-2 order-1">
+                    <div class="row li-main-content">
+                        <div class="col-lg-12">
+                            <div class="li-blog-single-item pb-30">
+                                <div class="li-blog-banner">
+                                    <a><img class="img-full" src="{{asset($post->imgPath)}}" alt="{{$post->title}}"></a>
+                                </div>
+                                <div class="li-blog-content">
+                                    <div class="li-blog-details">
+                                        <h3 class="li-blog-heading pt-35"><a>{{$post->title}}</a></h3>
+                                        <div class="li-blog-meta">
+                                            <a class="author" href="#"><i class="fa fa-user"></i>مدیر</a>
+                                            <a class="comment" href="#"><i class="fa fa-comment-o"></i> {{count($comments)}} نظر</a>
+                                            <a class="comment" href="#"><i class="fa fa-eye"></i> {{$post->view}} بازدید </a>
+                                            <a class="post-time" href="#"><i class="fa fa-calendar"></i>{{Verta::instance($post->updated_at)->format(' %d %B %Y')}}</a>
+                                        </div>
+                                        <div> <?= $post->content ?></div>
+                                        <!-- Begin Blog Blockquote Area -->
+
+                                        <!-- Blog Blockquote Area End Here -->
+                                     {{--   <div class="li-tag-line">
+                                            <h4>برچسب:</h4>
+                                            <a href="#">هدفون</a>,
+                                            <a href="#">بازی های ویدئویی</a>,
+                                            <a href="#">بلندگوهای بی سیم</a>
+                                        </div>
+                                        <div class="li-blog-sharing text-center pt-30">
+                                            <h4>به اشتراک گذاری این پست:</h4>
+                                            <a href="#"><i class="fa fa-facebook"></i></a>
+                                            <a href="#"><i class="fa fa-twitter"></i></a>
+                                            <a href="#"><i class="fa fa-pinterest"></i></a>
+                                            <a href="#"><i class="fa fa-google-plus"></i></a>
+                                        </div>--}}
+                                    </div>
+                                </div>
                             </div>
-                            <div class="collapsible-content">
-                                <ul class="card-content">
-                                    @foreach($categories as $category)
-                                        <li>
-                                            <a href="/blog?cat={{$category->slug}}">
-                                                <i class="lnr lnr-chevron-right"></i>{{$category->title}}
-                                                {{--<span class="item-count">35</span>--}}
-                                            </a>
-                                        </li>
+                            <!-- Begin Li's Blog Comment Section -->
+                            <div class="li-comment-section">
+                                <h3>{{count($comments)}} نظر</h3>
+                                <ul>
+                                    @foreach($comments as $comment)
+                                    <li>
+                                        <div class="author-avatar pt-15">
+                                            <img src="{{asset('limupa/images/product-details/user.png')}}" alt="User">
+                                        </div>
+                                        <div class="comment-body pl-15">
+
+                                            <h5 class="comment-author pt-15">{{$comment->name}}</h5>
+                                            <div class="comment-post-date">
+                                                {{Verta::instance($comment->created_at)->format(' %d %B %Y')}}
+                                            </div>
+                                            <p>{{$comment->content}}</p>
+                                        </div>
+                                    </li>
+                                        @php $comments_ansswers=App\Post_comments::where('parent',$comment->id)->get() @endphp
+                                        @foreach($comments_ansswers as $comments_ansswer)
+                                    <li class="comment-children">
+                                        <div class="author-avatar pt-15">
+                                            <img src="{{asset('limupa/images/product-details/admin.png')}}" alt="Admin">
+                                        </div>
+                                        <div class="comment-body pl-15">
+
+                                            <h5 class="comment-author pt-15">مدیر</h5>
+                                            <div class="comment-post-date">
+                                                {{Verta::instance($comments_ansswer->created_at)->format(' %d %B %Y')}}
+                                            </div>
+                                            <p>{{$comments_ansswer->content}}
+                                            </p>
+                                        </div>
+                                    </li>
+                                        @endforeach
                                     @endforeach
                                 </ul>
                             </div>
-                            <!-- end /.collapsible_content -->
+                            <!-- Li's Blog Comment Section End Here -->
+                            <!-- Begin Blog comment Box Area -->
+                            <div class="li-blog-comment-wrapper">
+                                <h3>ارسال یک نظر</h3>
+                                <p>آدرس ایمیل شما منتشر نخواهد شد. زمینه های مورد نیاز مشخص شده اند *</p>
+                                <form class="cmnt_reply_form" action="{{route('comment_post_store')}}" method="post">
+                                    @csrf
+                                    <div class="comment-post-box">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <label>نظر</label>
+                                                <textarea name="content" placeholder="یک نظر بنویسید"></textarea>
+                                            </div>
+                                            <div class="col-lg-4 col-md-4 col-sm-4 mt-5 mb-sm-20 mb-xs-20">
+                                                <label>نام</label>
+                                                <input name="name" type="text" class="coment-field" placeholder="نام">
+                                            </div>
+                                            <div class="col-lg-4 col-md-4 col-sm-4 mt-5 mb-sm-20 mb-xs-20">
+                                                <label>ایمیل</label>
+                                                <input type="email" name="email" class="coment-field" placeholder="ایمیل">
+                                                <input type="hidden" name="post" value="{{$post->id}}">
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div class="coment-btn pt-30 pb-sm-30 f-left">
+                                                    <input class="li-btn-2" type="submit" name="submit" value="ارسال نظر">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- Blog comment Box Area End Here -->
                         </div>
-                        <!-- end /.sidebar-card -->
-
-                        <!-- end /.sidebar-card -->
-
-
-                        <!-- end /.banner -->
-                    </aside>
-                    <!-- end /.aside -->
+                    </div>
                 </div>
-                <!-- end /.col-md-4 -->
-
+                <!-- Li's Main Content Area End Here -->
             </div>
-            <!-- end /.row -->
         </div>
-        <!-- end /.container -->
-    </section>
-    <!--================================
-            END LOGIN AREA
-    =================================-->
+    </div>
+    <!-- Li's Main Blog Page Area End Here -->
+
+
 
 @endsection
 

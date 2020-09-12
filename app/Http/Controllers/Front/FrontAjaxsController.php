@@ -153,13 +153,13 @@ class FrontAjaxsController extends Controller
 
 
                             <div class="row" style="margin-right: 0">
-                                <div class="col-xs-2" style="padding-right: 0;padding-left: 0;margin-right: 13px;margin-top: 8px">
+                                <div class="col-xs-1" style="padding-right: 0;padding-left: 0;margin-right: 13px;margin-top: 12px">
                                     <img width="50" src="<?= asset($product->image) ?>" alt="">
                                 </div>
-                                <div class="col-xs-9" style="padding-top: 3px;padding-right: 31px;">
+                                <div class="col-xs-9" style="padding-top: 13px;padding-right: 31px;">
                                     <div class="row">
                                         <div class="col-12">
-                                            <h6 style="font-size: 10px;text-align: right; line-height: 2;color: #fff"><?= $product->title ?></h6>
+                                            <h6 style="font-size: 10px;text-align: right; line-height: 2;color: #555"><?= $product->title ?></h6>
                                         </div>
                                     </div>
                                     <!--<div class="row align-items-center">

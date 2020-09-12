@@ -4,83 +4,77 @@
 @endsection
 @section('style')
     <style>
-        h3{
-            font-family: Vazir!important;
+        .text-md-right{
+            text-align: left!important;
         }
-        .button{
-            background: #7fad39;
-            border: 1px solid #7fad39;
-            border-radius: 0;
-        }
-        .button:hover{
-            border-color: #7fad39;
-        }
-        .login_box_area .login_box_img:before{
-            background: #7fad39;
-        }
-        .form-control.is-invalid, .was-validated .form-control:invalid{
-            background-position: right calc(23.375em + .1875rem) center;
-        }
-        .invalid-feedback{
 
-            font-size: 12px;
-            color: red;
-
-        }
     </style>
 @endsection
 @section('content')
-
-    <div id="container">
+    <!-- Begin Li's Breadcrumb Area -->
+    <div class="breadcrumb-area">
         <div class="container">
-            <!-- Breadcrumb Start-->
-
-            <!-- Breadcrumb End-->
-            <div class="row">
-                <!--Middle Part Start-->
-                <div id="content" class="col-sm-9">
-                    <h1 class="title">حساب کاربری ورود</h1>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <h2 class="subtitle">مشتری جدید</h2>
-                            <p><strong>ثبت نام حساب کاربری</strong></p>
-                            <p>با ایجاد حساب کاربری میتوانید سریعتر خرید کرده، از وضعیت خرید خود آگاه شده و تاریخچه ی سفارشات خود را مشاهده کنید.</p>
-                            <a href="/register" class="btn btn-primary">ادامه</a> </div>
-                        <form class="row login_form" method="POST" action="{{ route('login') }}">
-                            @csrf
-                        <div class="col-sm-6">
-                            <h2 class="subtitle">مشتری قبلی</h2>
-                            <p><strong>من از قبل مشتری شما هستم</strong></p>
-                            <div class="form-group">
-                                <label class="control-label" for="input-email">آدرس ایمیل</label>
-                                <input type="text" name="email" placeholder="آدرس ایمیل" id="input-email" value="{{ old('email') }}" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" />
-                                @if ($errors->has('email'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label" for="input-password">رمز عبور</label>
-                                <input type="password" name="password" value="" placeholder="رمز عبور" id="input-password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" />
-                                @if ($errors->has('password'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                                <br />
-                               {{-- <a href="#">فراموشی رمز عبور</a></div>--}}
-                            <input type="submit" value="ورود" class="btn btn-primary" />
-                        </div>
-                        </form>
-                    </div>
-                </div>
-                <!--Middle Part End -->
-                <!--Right Part Start -->
-                <!--Right Part End -->
+            <div class="breadcrumb-content">
+                <ul>
+                    <li><a href="/">خانه</a></li>
+                    <li class="active">ورود</li>
+                </ul>
             </div>
         </div>
     </div>
+    <!-- Li's Breadcrumb Area End Here -->
+    <!-- Begin Login Content Area -->
+    <div class="page-section">
+        <div class="container">
+            <div class="row">
+                <div style="margin: 0 auto" class="col-sm-12 col-md-6 col-xs-12 col-lg-6">
+                    <!-- Login Form s-->
+                    <form class="row login_form" method="POST" action="{{ route('login') }}">
+                        @csrf
+                        <div class="login-form">
+                            <h4 class="login-title">ورود</h4>
+                            <div class="row">
+                                <div class="col-md-12 col-12 mb-20">
+                                    <label>آدرس ایمیل*</label>
+                                    <input class="mb-0" name="email" type="email" placeholder="آدرس ایمیل">
+                                    @if ($errors->has('email'))
+                                        <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('email') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                                <div class="col-12 mb-20">
+                                    <label>رمزعبور</label>
+                                    <input class="mb-0" name="password" type="password" placeholder="رمزعبور">
+                                    @if ($errors->has('password'))
+                                        <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('password') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="check-box d-inline-block ml-0 ml-md-2 mt-10">
+                                        <input type="checkbox" id="remember_me">
+                                        <label for="remember_me">مرا به خاطر بسپار</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-8 mt-10 mb-20 text-left text-md-right">
+                                    <a href="#"> رمز عبور را فراموش کرده اید؟</a>
+                                    <a href="/register"> هنوز ثبت نام نکرده اید؟</a>
+                                </div>
+                                <div class="col-md-12">
+                                    <button type="submit" class="register-button mt-0">ورود</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Login Content Area End Here -->
+
+
 
 
 

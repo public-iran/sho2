@@ -42,6 +42,9 @@
             padding: 11px 0;
             background: #fafafa;
         }
+        .main-sidebar{
+            z-index: 1;
+        }
     </style>
 @endsection
 
